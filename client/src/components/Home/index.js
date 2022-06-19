@@ -7,7 +7,11 @@ import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
-
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 
 //Dev mode
@@ -174,61 +178,78 @@ const styles = theme => ({
 
 //  export default withStyles(styles)(Home);
 
-class Review extends Component {
-  constructor(props) {
-    super(props);
-  }
+const MovieSelection = (classes) => {
+  const [selectedMovie, setSelectedMovie] = React.useState('');
+  const changeMovie = (event) => {
+    setSelectedMovie(event.target.value);
+  };
 
-  render() {
-    const { classes } = this.props;
+  return (
+    <FormControl variant="outlined" className={classes.formControl}>
+        <InputLabel id="demo-simple-select-outlined-label">Age</InputLabel>
+        <Select
+          labelId="demo-simple-select-outlined-label"
+          id="demo-simple-select-outlined"
+          value={selectedMovie}
+          onChange={changeMovie}
+          label="Select a Movie"
+        >
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={1}>Avenger's: Endgame</MenuItem>
+          <MenuItem value={2}>Spiderman: No Way Home</MenuItem>
+          <MenuItem value={3}>The Lion King</MenuItem>
+          <MenuItem value={4}>Top Gun Maverick</MenuItem>
+          <MenuItem value={5}>Harry Potter and the Philosopher's Stone</MenuItem>
+        </Select>
+      </FormControl>
+  )
+}
 
-    const pageTitle = (
-      <Grid
-        container
-        spacing={0}
-        direction="column"
-        justify="flex-start"
-        alignItems="flex-start"
-        style={{ minHeight: '100vh' }}
-        className={classes.mainMessageContainer}
-      >
-        <Grid Item>
-          <Typography variant={"h3"}>
-            <React.Fragment>
-              Movie Review Form
-            </React.Fragment>
-          </Typography>
-        </Grid>
-
-        <Grid Item>
-          <Button variant="contained" color="secondary">
-            Secondary
-          </Button>
-        </Grid>
+const Review = (classes) => {
+  const homePage = (
+    <Grid
+      container
+      spacing={0}
+      direction="column"
+      justify="flex-start"
+      alignItems="flex-start"
+      style={{ minHeight: '100vh' }}
+      className={classes.mainMessageContainer}
+    >
+      <Grid Item>
+        <Typography variant={"h3"}>
+          <React.Fragment>
+            Movie Review from
+          </React.Fragment>
+        </Typography>
       </Grid>
-    )
 
-    return (
-      <MuiThemeProvider theme={theme}>
-        <div className={classes.root}>
-          <CssBaseline />
-          <Paper
-            className={classes.paper}
-          >
-            {pageTitle}
+      <Grid Item>
+        <Button variant="contained" color="secondary">
+          Secondary
+        </Button>
+      </Grid>
 
-          </Paper>
+      <Grid Item>
+      <MovieSelection classes={classes} />
+      </Grid>
+    </Grid>
+  )
 
-        </div>
-      </MuiThemeProvider>
-    );
-  }
-
+  return (
+    <MuiThemeProvider theme={theme}>
+      <div className={classes.root}>
+        <CssBaseline />
+        <Paper
+          className={classes.paper}
+        >
+          {homePage}
+        </Paper>
+      </div>
+    </MuiThemeProvider>
+  );
 }
 
-
-Review.propTypes = {
-  classes: PropTypes.object.isRequired
-}
-
-export default withStyles(styles)(Review); 
+ export default withStyles(styles)(Review); 
