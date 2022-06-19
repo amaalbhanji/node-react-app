@@ -182,77 +182,79 @@ const styles = theme => ({
 
 //  export default withStyles(styles)(Home);
 
-const MovieSelection = (classes) => {
-  const [selectedMovie, setSelectedMovie] = React.useState('');
+const MovieSelection = (props) => {
   const changeMovie = (event) => {
-    setSelectedMovie(event.target.value);
+    props.onChange(event.target.value);
   };
 
   return (
-    <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel id="demo-simple-select-outlined-label">Select a Movie</InputLabel>
-        <Select
-          labelId="demo-simple-select-outlined-label"
-          id="demo-simple-select-outlined"
-          value={selectedMovie}
-          onChange={changeMovie}
-          label="Select a Movie"
-        >
-          <MenuItem value="">
-            <em>None</em>
-          </MenuItem>
-          <MenuItem value={1}>Avenger's: Endgame</MenuItem>
-          <MenuItem value={2}>Spiderman: No Way Home</MenuItem>
-          <MenuItem value={3}>The Lion King</MenuItem>
-          <MenuItem value={4}>Top Gun Maverick</MenuItem>
-          <MenuItem value={5}>Harry Potter and the Philosopher's Stone</MenuItem>
-        </Select>
-      </FormControl>
+    <FormControl variant="outlined" className={props.classes.formControl}>
+      <InputLabel id="demo-simple-select-outlined-label">Select a Movie</InputLabel>
+      <Select
+        labelId="demo-simple-select-outlined-label"
+        id="demo-simple-select-outlined"
+        value={props.selectedMovie}
+        onChange={changeMovie}
+        label="Select a Movie"
+      >
+        <MenuItem value="">
+          <em>None</em>
+        </MenuItem>
+        <MenuItem value={1}>Avenger's: Endgame</MenuItem>
+        <MenuItem value={2}>Spiderman: No Way Home</MenuItem>
+        <MenuItem value={3}>The Lion King</MenuItem>
+        <MenuItem value={4}>Top Gun Maverick</MenuItem>
+        <MenuItem value={5}>Harry Potter and the Philosopher's Stone</MenuItem>
+      </Select>
+    </FormControl>
   )
 }
 
-const ReviewTitle = (classes) => {
-  const [enteredTitle, setEnteredTitle] = React.useState('');
+const ReviewTitle = (props) => {
+
   const changeTitle = (event) => {
-    setEnteredTitle(event.target.value);
+    props.onChange(event.target.value);
   };
 
   return (
-  <form className={classes.root} noValidate autoComplete="off">
-   <TextField id="outlined-basic" label="Enter Review Title" placeholder="..." variant="outlined" value={enteredTitle}
-          onChange={changeTitle} />
-  </form>
-  )
-}
-
-const ReviewBody = (classes) => {
-  const [enteredReview, setEnteredReview] = React.useState('');
-  const changeReview = (event) => {
-    setEnteredReview(event.target.value);
-  };
-
-  return (
-    <form className={classes.root} noValidate autoComplete="off">
-    <TextField
-          id="outlined-textarea"
-          label="Enter Review"
-          placeholder="..."
-          multiline
-          variant="outlined"
-          value={enteredReview}
-          onChange={changeReview}
-          inputProps={{ maxLength: 200 }}
-          helperText={`${enteredReview.length} / 200`}
-        />
+    <form className={props.classes.root} noValidate autoComplete="off">
+      <TextField id="outlined-basic" label="Enter Review Title" placeholder="..." variant="outlined" value={props.enteredTitle}
+        onChange={changeTitle} />
     </form>
   )
 }
 
-const ReviewRating = (classes) => {
+const ReviewBody = (props) => {
+  const changeReview = (event) => {
+    props.onChange(event.target.value);
+  };
+
   return (
+    <form className={props.classes.root} noValidate autoComplete="off">
+      <TextField
+        id="outlined-textarea"
+        label="Enter Review"
+        placeholder="..."
+        multiline
+        variant="outlined"
+        value={props.enteredReview}
+        onChange={changeReview}
+        inputProps={{ maxLength: 200 }}
+        helperText={`${props.enteredReview.length} / 200`}
+      />
+    </form>
+  )
+}
+
+const ReviewRating = (props) => {
+
+  const changeRating = (event) => {
+    props.onChange(event.target.value);
+  }
+    return (
     <FormControl component="fieldset">
       <FormLabel component="legend">Movie Rating</FormLabel>
-      <RadioGroup row aria-label="position" name="position" defaultValue="top">
+      <RadioGroup row aria-label="position" name="position" defaultValue="top" value ={props.selectedRating} onChange={changeRating}>
         <FormControlLabel
           value="1"
           control={<Radio color="primary" />}
@@ -268,12 +270,12 @@ const ReviewRating = (classes) => {
           control={<Radio color="primary" />}
           label="3"
         />
-         <FormControlLabel
+        <FormControlLabel
           value="4"
           control={<Radio color="primary" />}
           label="4"
         />
-         <FormControlLabel
+        <FormControlLabel
           value="5"
           control={<Radio color="primary" />}
           label="5"
@@ -284,6 +286,28 @@ const ReviewRating = (classes) => {
 }
 
 const Review = (classes) => {
+  const [enteredReview, setEnteredReview] = React.useState('');
+  const [enteredTitle, setEnteredTitle] = React.useState('');
+  const [selectedMovie, setSelectedMovie] = React.useState('');
+  const [selectedRating, setSelectedRating] = React.useState(0)
+
+
+  const changeReview = (value) => {
+    setEnteredReview(value);
+  };
+
+  const changeTitle = (value) => {
+    setEnteredTitle(value);
+  };
+
+  const changeMovie = (value) => {
+    setSelectedMovie(value);
+  };
+
+  const changeRating = (value) => {
+    setSelectedRating(value);
+  }
+
   const homePage = (
     <Grid
       container
@@ -303,19 +327,19 @@ const Review = (classes) => {
       </Grid>
 
       <Grid Item>
-      <MovieSelection classes={classes} />
+        <MovieSelection selectedMovie={selectedMovie} onChange={changeMovie} classes={classes} />
       </Grid>
 
       <Grid Item>
-      <ReviewTitle classes={classes} />
+        <ReviewTitle enteredTitle={enteredTitle} onChange={changeTitle} classes={classes} />
       </Grid>
 
       <Grid Item>
-      <ReviewBody classes={classes} />
+        <ReviewBody enteredReview={enteredReview} onChange={changeReview} classes={classes} />
       </Grid>
 
       <Grid Item>
-      <ReviewRating classes={classes} />
+        <ReviewRating selectedRating = {selectedRating} onChange = {changeRating} classes={classes} />
       </Grid>
 
       <Grid Item>
@@ -324,6 +348,7 @@ const Review = (classes) => {
         </Button>
       </Grid>
     </Grid>
+
   )
 
   return (
@@ -340,4 +365,4 @@ const Review = (classes) => {
   );
 }
 
- export default withStyles(styles)(Review); 
+export default withStyles(styles)(Review); 
