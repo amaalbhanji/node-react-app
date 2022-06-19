@@ -78,109 +78,107 @@ const styles = theme => ({
 });
 
 
-// class Home extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       userID: 1,
-//       mode: 0
-//     }
-//   };
+class Home extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userID: 1,
+      mode: 0
+    }
+  };
 
-//   // componentDidMount() {
-//   //   //this.loadUserSettings();
-//   // }
-
-
-//   // loadUserSettings() {
-//   //   this.callApiLoadUserSettings()
-//   //     .then(res => {
-//   //       //console.log("loadUserSettings returned: ", res)
-//   //       var parsed = JSON.parse(res.express);
-//   //       console.log("loadUserSettings parsed: ", parsed[0].mode)
-//   //       this.setState({ mode: parsed[0].mode });
-//   //     });
-//   // }
-
-//   // callApiLoadUserSettings = async () => {
-//   //   const url = serverURL + "/api/loadUserSettings";
-
-//   //   const response = await fetch(url, {
-//   //     method: "POST",
-//   //     headers: {
-//   //       "Content-Type": "application/json",
-//   //       //authorization: `Bearer ${this.state.token}`
-//   //     },
-//   //     body: JSON.stringify({
-//   //       userID: this.state.userID
-//   //     })
-//   //   });
-//   //   const body = await response.json();
-//   //   if (response.status !== 200) throw Error(body.message);
-//   //   console.log("User settings: ", body);
-//   //   return body;
-//   // }
-
-//   render() {
-//     const { classes } = this.props;
+  componentDidMount() {
+    //this.loadUserSettings();
+  }
 
 
-//     const mainMessage = (
-//       <Grid
-//         container
-//         spacing={0}
-//         direction="column"
-//         justify="flex-start"
-//         alignItems="flex-start"
-//         style={{ minHeight: '100vh' }}
-//         className={classes.mainMessageContainer}
-//       >
-//         <Grid item>
+  loadUserSettings() {
+    this.callApiLoadUserSettings()
+      .then(res => {
+        //console.log("loadUserSettings returned: ", res)
+        var parsed = JSON.parse(res.express);
+        console.log("loadUserSettings parsed: ", parsed[0].mode)
+        this.setState({ mode: parsed[0].mode });
+      });
+  }
 
-//           <Typography
-//             variant={"h3"}
-//             className={classes.mainMessage}
-//             align="flex-start"
-//           >
-//             {this.state.mode === 0 ? (
-//               <React.Fragment>
-//                 Movie Review From!
-//               </React.Fragment>
-//             ) : (
-//               <React.Fragment>
-//                 Welcome back!
-//               </React.Fragment>
-//             )}
-//           </Typography>
+  callApiLoadUserSettings = async () => {
+    const url = serverURL + "/api/loadUserSettings";
 
-//         </Grid>
-//       </Grid>
-//     ) 
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        userID: this.state.userID
+      })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    console.log("User settings: ", body);
+    return body;
+  }
 
-
-//     return (
-//       <MuiThemeProvider theme={theme}>
-//         <div className={classes.root}>
-//           <CssBaseline />
-//           <Paper
-//             className={classes.paper}
-//           >
-//             {mainMessage}
-
-//           </Paper>
-
-//         </div>
-//       </MuiThemeProvider>
-//     );
-//   }
-// }
+  render() {
+    const { classes } = this.props;
 
 
-// Home.propTypes = {
-//   classes: PropTypes.object.isRequired
-// };
+    const mainMessage = (
+      <Grid
+        container
+        spacing={0}
+        direction="column"
+        justify="flex-start"
+        alignItems="flex-start"
+        style={{ minHeight: '100vh' }}
+        className={classes.mainMessageContainer}
+      >
+        <Grid item>
 
-//  export default withStyles(styles)(Home);
+          <Typography
+            variant={"h3"}
+            className={classes.mainMessage}
+            align="flex-start"
+          >
+            {this.state.mode === 0 ? (
+              <React.Fragment>
+                Movie Review From!
+              </React.Fragment>
+            ) : (
+              <React.Fragment>
+                Welcome back!
+              </React.Fragment>
+            )}
+          </Typography>
+
+        </Grid>
+      </Grid>
+    ) 
+
+
+    return (
+      <MuiThemeProvider theme={theme}>
+        <div className={classes.root}>
+          <CssBaseline />
+          <Paper
+            className={classes.paper}
+          >
+            {mainMessage}
+
+          </Paper>
+
+        </div>
+      </MuiThemeProvider>
+    );
+  }
+}
+
+
+Home.propTypes = {
+  classes: PropTypes.object.isRequired
+};
 
 const MovieSelection = (props) => {
   const changeMovie = (event) => {
@@ -200,11 +198,11 @@ const MovieSelection = (props) => {
         <MenuItem value="">
           <em>None</em>
         </MenuItem>
-        <MenuItem value={1}>Avenger's: Endgame</MenuItem>
-        <MenuItem value={2}>Spiderman: No Way Home</MenuItem>
-        <MenuItem value={3}>The Lion King</MenuItem>
-        <MenuItem value={4}>Top Gun Maverick</MenuItem>
-        <MenuItem value={5}>Harry Potter and the Philosopher's Stone</MenuItem>
+        <MenuItem value={"Avenger's: Endgame"}>Avenger's: Endgame</MenuItem>
+        <MenuItem value={"Spiderman: No Way Home"}>Spiderman: No Way Home</MenuItem>
+        <MenuItem value={"The Lion King"}>The Lion King</MenuItem>
+        <MenuItem value={"Top Gun Maverick"}>Top Gun Maverick</MenuItem>
+        <MenuItem value={"Harry Potter and the Philosopher's Stone"}>Harry Potter and the Philosopher's Stone</MenuItem>
       </Select>
     </FormControl>
   )
@@ -251,10 +249,10 @@ const ReviewRating = (props) => {
   const changeRating = (event) => {
     props.onChange(event.target.value);
   }
-    return (
+  return (
     <FormControl component="fieldset">
       <FormLabel component="legend">Movie Rating</FormLabel>
-      <RadioGroup row aria-label="position" name="position" defaultValue="top" value ={props.selectedRating} onChange={changeRating}>
+      <RadioGroup row aria-label="position" name="position" defaultValue="top" value={props.selectedRating} onChange={changeRating}>
         <FormControlLabel
           value="1"
           control={<Radio color="primary" />}
@@ -308,61 +306,86 @@ const Review = (classes) => {
     setSelectedRating(value);
   }
 
-  const homePage = (
-    <Grid
-      container
-      spacing={0}
-      direction="column"
-      justify="flex-start"
-      alignItems="flex-start"
-      style={{ minHeight: '100vh' }}
-      className={classes.mainMessageContainer}
-    >
-      <Grid Item>
-        <Typography variant={"h3"}>
-          <React.Fragment>
-            Movie Review Form
-          </React.Fragment>
-        </Typography>
-      </Grid>
-
-      <Grid Item>
-        <MovieSelection selectedMovie={selectedMovie} onChange={changeMovie} classes={classes} />
-      </Grid>
-
-      <Grid Item>
-        <ReviewTitle enteredTitle={enteredTitle} onChange={changeTitle} classes={classes} />
-      </Grid>
-
-      <Grid Item>
-        <ReviewBody enteredReview={enteredReview} onChange={changeReview} classes={classes} />
-      </Grid>
-
-      <Grid Item>
-        <ReviewRating selectedRating = {selectedRating} onChange = {changeRating} classes={classes} />
-      </Grid>
-
-      <Grid Item>
-        <Button variant="contained" color="secondary">
-          Submit Review
-        </Button>
-      </Grid>
+  const validateSubmit = () => {
+    if (enteredTitle.length === 0) {
+      console.log("Please enter your review title");
+    } 
+    
+    if (enteredReview.length === 0) {
+      console.log("Please enter your review");
+    } 
+    
+    if (selectedRating === 0) {
+      console.log("Please select the rating");
+    } 
+    
+    if (selectedMovie.length === 0) {
+      console.log("Please select a movie");
+    } 
+    
+    if (enteredTitle.length > 0 && enteredReview.length > 0 && selectedRating > 0 && selectedMovie.length > 0) {
+      console.log("Your review has been submitted");
+      console.log("Selected Movie: ", selectedMovie);
+      console.log("Review Title: ", enteredTitle);
+      console.log("Review Body: ", enteredReview);
+      console.log("Movie Rating: ", selectedRating);
+    }
+  }
+const homePage = (
+  <Grid
+    container
+    spacing={0}
+    direction="column"
+    justify="flex-start"
+    alignItems="flex-start"
+    style={{ minHeight: '100vh' }}
+    className={classes.mainMessageContainer}
+  >
+    <Grid Item>
+      <Typography variant={"h3"}>
+        <React.Fragment>
+          Movie Review Form
+        </React.Fragment>
+      </Typography>
     </Grid>
 
-  )
+    <Grid Item>
+      <MovieSelection selectedMovie={selectedMovie} onChange={changeMovie} classes={classes} />
+    </Grid>
 
-  return (
-    <MuiThemeProvider theme={theme}>
-      <div className={classes.root}>
-        <CssBaseline />
-        <Paper
-          className={classes.paper}
-        >
-          {homePage}
-        </Paper>
-      </div>
-    </MuiThemeProvider>
-  );
+    <Grid Item>
+      <ReviewTitle enteredTitle={enteredTitle} onChange={changeTitle} classes={classes} />
+    </Grid>
+
+    <Grid Item>
+      <ReviewBody enteredReview={enteredReview} onChange={changeReview} classes={classes} />
+    </Grid>
+
+    <Grid Item>
+      <ReviewRating selectedRating={selectedRating} onChange={changeRating} classes={classes} />
+    </Grid>
+
+    <Grid Item>
+      <Button variant="contained" color="secondary" onClick={validateSubmit}>
+        Submit Review
+      </Button>
+    </Grid>
+  </Grid>
+
+)
+
+return (
+  <MuiThemeProvider theme={theme}>
+    <div className={classes.root}>
+      <CssBaseline />
+      <Paper
+        className={classes.paper}
+      >
+        {homePage}
+      </Paper>
+    </div>
+  </MuiThemeProvider>
+);
 }
 
 export default withStyles(styles)(Review); 
