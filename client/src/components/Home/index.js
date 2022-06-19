@@ -26,7 +26,7 @@ const theme = createTheme({
   palette: {
     type: 'dark',
     background: {
-      default: "#000000"
+      default: "#00000"
     },
     primary: {
       main: "#52f1ff",
@@ -40,7 +40,7 @@ const theme = createTheme({
 const styles = theme => ({
   root: {
     body: {
-      backgroundColor: "#000000",
+      backgroundColor: "#00000",
       opacity: opacityValue,
       overflow: "hidden",
     },
@@ -135,7 +135,7 @@ class Home extends Component {
           >
             {this.state.mode === 0 ? (
               <React.Fragment>
-                Welcome to GG!
+                Movie Review From!
               </React.Fragment>
             ) : (
               <React.Fragment>
@@ -146,7 +146,7 @@ class Home extends Component {
 
         </Grid>
       </Grid>
-    )
+    ) 
 
 
     return (
@@ -169,4 +169,4 @@ Home.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(Home);
+export default withStyles(styles)(Home); 
