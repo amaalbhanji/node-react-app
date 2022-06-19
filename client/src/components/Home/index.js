@@ -190,7 +190,7 @@ const MovieSelection = (classes) => {
 
   return (
     <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel id="demo-simple-select-outlined-label">Movie</InputLabel>
+        <InputLabel id="demo-simple-select-outlined-label">Select a Movie</InputLabel>
         <Select
           labelId="demo-simple-select-outlined-label"
           id="demo-simple-select-outlined"
@@ -227,7 +227,6 @@ const ReviewTitle = (classes) => {
 
 const ReviewBody = (classes) => {
   const [enteredReview, setEnteredReview] = React.useState('');
-
   const changeReview = (event) => {
     setEnteredReview(event.target.value);
   };
@@ -321,7 +320,7 @@ const Review = (classes) => {
 
       <Grid Item>
         <Button variant="contained" color="secondary">
-          Secondary
+          Submit Review
         </Button>
       </Grid>
     </Grid>
