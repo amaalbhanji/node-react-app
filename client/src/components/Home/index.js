@@ -187,17 +187,12 @@ const MovieSelection = (props) => {
 
   return (
     <FormControl variant="outlined" className={props.classes.formControl}>
-      <InputLabel id="demo-simple-select-outlined-label">Select a Movie</InputLabel>
+      <InputLabel>Select a Movie</InputLabel>
       <Select
-        labelId="demo-simple-select-outlined-label"
-        id="demo-simple-select-outlined"
         value={props.selectedMovie}
         onChange={changeMovie}
         label="Select a Movie"
       >
-        <MenuItem value="">
-          <em>None</em>
-        </MenuItem>
         <MenuItem value={"Avenger's: Endgame"}>Avenger's: Endgame</MenuItem>
         <MenuItem value={"Spiderman: No Way Home"}>Spiderman: No Way Home</MenuItem>
         <MenuItem value={"The Lion King"}>The Lion King</MenuItem>
@@ -215,8 +210,9 @@ const ReviewTitle = (props) => {
   };
 
   return (
-    <form className={props.classes.root} noValidate autoComplete="off">
-      <TextField id="outlined-basic" label="Enter Review Title" placeholder="..." variant="outlined" value={props.enteredTitle}
+    <form className={props.classes.root}>
+      <TextField label="Enter Review Title" placeholder="..." variant="outlined"
+        value={props.enteredTitle}
         onChange={changeTitle} />
     </form>
   )
@@ -228,9 +224,8 @@ const ReviewBody = (props) => {
   };
 
   return (
-    <form className={props.classes.root} noValidate autoComplete="off">
+    <form className={props.classes.root}>
       <TextField
-        id="outlined-textarea"
         label="Enter Review"
         placeholder="..."
         multiline
@@ -252,7 +247,7 @@ const ReviewRating = (props) => {
   return (
     <FormControl component="fieldset">
       <FormLabel component="legend">Movie Rating</FormLabel>
-      <RadioGroup row aria-label="position" name="position" defaultValue="top" value={props.selectedRating} onChange={changeRating}>
+      <RadioGroup row aria-label="position" value={props.selectedRating} onChange={changeRating}>
         <FormControlLabel
           value="1"
           control={<Radio color="primary" />}
