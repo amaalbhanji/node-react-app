@@ -9,9 +9,13 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
-import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+import TextField from '@material-ui/core/TextField';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormLabel from '@material-ui/core/FormLabel';
 
 
 //Dev mode
@@ -186,7 +190,7 @@ const MovieSelection = (classes) => {
 
   return (
     <FormControl variant="outlined" className={classes.formControl}>
-        <InputLabel id="demo-simple-select-outlined-label">Age</InputLabel>
+        <InputLabel id="demo-simple-select-outlined-label">Movie</InputLabel>
         <Select
           labelId="demo-simple-select-outlined-label"
           id="demo-simple-select-outlined"
@@ -207,6 +211,79 @@ const MovieSelection = (classes) => {
   )
 }
 
+const ReviewTitle = (classes) => {
+  const [enteredTitle, setEnteredTitle] = React.useState('');
+  const changeTitle = (event) => {
+    setEnteredTitle(event.target.value);
+  };
+
+  return (
+  <form className={classes.root} noValidate autoComplete="off">
+   <TextField id="outlined-basic" label="Enter Review Title" placeholder="..." variant="outlined" value={enteredTitle}
+          onChange={changeTitle} />
+  </form>
+  )
+}
+
+const ReviewBody = (classes) => {
+  const [enteredReview, setEnteredReview] = React.useState('');
+
+  const changeReview = (event) => {
+    setEnteredReview(event.target.value);
+  };
+
+  return (
+    <form className={classes.root} noValidate autoComplete="off">
+    <TextField
+          id="outlined-textarea"
+          label="Enter Review"
+          placeholder="..."
+          multiline
+          variant="outlined"
+          value={enteredReview}
+          onChange={changeReview}
+          inputProps={{ maxLength: 200 }}
+          helperText={`${enteredReview.length} / 200`}
+        />
+    </form>
+  )
+}
+
+const ReviewRating = (classes) => {
+  return (
+    <FormControl component="fieldset">
+      <FormLabel component="legend">Movie Rating</FormLabel>
+      <RadioGroup row aria-label="position" name="position" defaultValue="top">
+        <FormControlLabel
+          value="1"
+          control={<Radio color="primary" />}
+          label="1"
+        />
+        <FormControlLabel
+          value="2"
+          control={<Radio color="primary" />}
+          label="2"
+        />
+        <FormControlLabel
+          value="3"
+          control={<Radio color="primary" />}
+          label="3"
+        />
+         <FormControlLabel
+          value="4"
+          control={<Radio color="primary" />}
+          label="4"
+        />
+         <FormControlLabel
+          value="5"
+          control={<Radio color="primary" />}
+          label="5"
+        />
+      </RadioGroup>
+    </FormControl>
+  )
+}
+
 const Review = (classes) => {
   const homePage = (
     <Grid
@@ -221,19 +298,31 @@ const Review = (classes) => {
       <Grid Item>
         <Typography variant={"h3"}>
           <React.Fragment>
-            Movie Review from
+            Movie Review Form
           </React.Fragment>
         </Typography>
+      </Grid>
+
+      <Grid Item>
+      <MovieSelection classes={classes} />
+      </Grid>
+
+      <Grid Item>
+      <ReviewTitle classes={classes} />
+      </Grid>
+
+      <Grid Item>
+      <ReviewBody classes={classes} />
+      </Grid>
+
+      <Grid Item>
+      <ReviewRating classes={classes} />
       </Grid>
 
       <Grid Item>
         <Button variant="contained" color="secondary">
           Secondary
         </Button>
-      </Grid>
-
-      <Grid Item>
-      <MovieSelection classes={classes} />
       </Grid>
     </Grid>
   )
