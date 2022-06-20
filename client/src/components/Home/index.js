@@ -19,7 +19,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 
 
 //Dev mode
-const serverURL = ""; //enable for dev mode
+const serverURL = "http://ov-research-4.uwaterloo.ca:3072"; //enable for dev mode
 
 //Deployment mode instructions
 //const serverURL = "http://ov-research-4.uwaterloo.ca:PORT"; //enable for deployed mode; Change PORT to the port number given to you;
