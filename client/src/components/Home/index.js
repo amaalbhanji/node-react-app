@@ -34,15 +34,16 @@ const opacityValue = 0.9;
 
 const theme = createTheme({
   palette: {
-    type: 'light',
+    type: "light",
     background: {
-      default: "#00000"
+      default: "#222222"
     },
     primary: {
-      main: "#52f1ff",
+      light: "757ce8",
+      main: "#ff0000",
     },
     secondary: {
-      main: "#b552f7",
+      main: "#0000FF",
     },
   },
 });
@@ -50,7 +51,7 @@ const theme = createTheme({
 const styles = theme => ({
   root: {
     body: {
-      backgroundColor: "#00000",
+      backgroundColor: "#ff0000",
       opacity: opacityValue,
       overflow: "hidden",
     },
@@ -180,13 +181,14 @@ Home.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
+//Creating Movie Selection Component
 const MovieSelection = (props) => {
   const changeMovie = (event) => {
     props.onChange(event.target.value);
   };
 
   return (
-    <FormControl variant="outlined" className={props.classes.formControl}>
+    <FormControl style={{minWidth: "200px", width : "auto"}} variant="outlined" className={props.classes.formControl}>
       <InputLabel>Select a Movie</InputLabel>
       <Select
         value={props.selectedMovie}
@@ -203,6 +205,7 @@ const MovieSelection = (props) => {
   )
 }
 
+//Creating Review Title Component
 const ReviewTitle = (props) => {
 
   const changeTitle = (event) => {
@@ -211,13 +214,14 @@ const ReviewTitle = (props) => {
 
   return (
     <form className={props.classes.root}>
-      <TextField label="Enter Review Title" placeholder="..." variant="outlined"
+      <TextField  style = {{width : "200px"}} label="Enter Review Title" placeholder="Review for ..." variant="outlined"
         value={props.enteredTitle}
         onChange={changeTitle} />
     </form>
   )
 }
 
+//Creating Review Body Component
 const ReviewBody = (props) => {
   const changeReview = (event) => {
     props.onChange(event.target.value);
@@ -225,9 +229,9 @@ const ReviewBody = (props) => {
 
   return (
     <form className={props.classes.root}>
-      <TextField
+      <TextField style = {{width : "200px"}}
         label="Enter Review"
-        placeholder="..."
+        placeholder="I really enjoyed ..."
         multiline
         variant="outlined"
         value={props.enteredReview}
@@ -239,6 +243,7 @@ const ReviewBody = (props) => {
   )
 }
 
+//Creating Review Rating Component
 const ReviewRating = (props) => {
 
   const changeRating = (event) => {
@@ -246,7 +251,7 @@ const ReviewRating = (props) => {
   }
   return (
     <FormControl component="fieldset">
-      <FormLabel component="legend">Movie Rating</FormLabel>
+      <FormLabel component="legend" style={{fontWeight: "bold", color: "black"}}>Movie Rating</FormLabel>
       <RadioGroup row aria-label="position" value={props.selectedRating} onChange={changeRating}>
         <FormControlLabel
           value="1"
@@ -277,8 +282,9 @@ const ReviewRating = (props) => {
     </FormControl>
   )
 }
-
+//Creating Parent Component Review
 const Review = (classes) => {
+  //Managing 4 states from parent component
   const [enteredReview, setEnteredReview] = React.useState('');
   const [enteredTitle, setEnteredTitle] = React.useState('');
   const [selectedMovie, setSelectedMovie] = React.useState('');
@@ -301,6 +307,7 @@ const Review = (classes) => {
     setSelectedRating(value);
   }
 
+  //Data validation with submit button
   const validateSubmit = () => {
     if (enteredTitle.length === 0) {
       console.log("Please enter your review title");
@@ -326,6 +333,44 @@ const Review = (classes) => {
       console.log("Movie Rating: ", selectedRating);
     }
   }
+
+  const titleStyle = {
+    marginTop: "40px",
+    marginBottom: "20px",
+    marginLeft: "20px",
+    textAlign: "center",
+  }
+
+  const selector = {
+    marginTop: "20px",
+    marginBottom: "10px",
+    marginLeft: "20px",
+  }
+
+  const reviewBox = {
+    marginTop: "10px",
+    marginBottom: "10px",
+    marginLeft: "20px",
+  }
+
+  const reviewBodyBox = {
+    marginTop: "10px",
+    marginBottom: "10px",
+    marginLeft: "20px",
+  }
+
+  const rating = {
+    marginTop: "10px",
+    marginBottom: "10px",
+    marginLeft: "20px",
+  }
+
+  const submit = {
+    marginTop: "10px",
+    marginBottom: "10px",
+    marginLeft: "20px",
+  }
+
 const homePage = (
   <Grid
     container
@@ -336,7 +381,7 @@ const homePage = (
     style={{ minHeight: '100vh' }}
     className={classes.mainMessageContainer}
   >
-    <Grid Item>
+    <Grid Item style={titleStyle}>
       <Typography variant={"h3"}>
         <React.Fragment>
           Movie Review Form
@@ -344,23 +389,23 @@ const homePage = (
       </Typography>
     </Grid>
 
-    <Grid Item>
+    <Grid Item style = {selector}>
       <MovieSelection selectedMovie={selectedMovie} onChange={changeMovie} classes={classes} />
     </Grid>
 
-    <Grid Item>
+    <Grid Item style = {reviewBox}>
       <ReviewTitle enteredTitle={enteredTitle} onChange={changeTitle} classes={classes} />
     </Grid>
 
-    <Grid Item>
+    <Grid Item style = {reviewBodyBox}>
       <ReviewBody enteredReview={enteredReview} onChange={changeReview} classes={classes} />
     </Grid>
 
-    <Grid Item>
+    <Grid Item style = {rating}>
       <ReviewRating selectedRating={selectedRating} onChange={changeRating} classes={classes} />
     </Grid>
 
-    <Grid Item>
+    <Grid Item style = {submit}>
       <Button variant="contained" color="secondary" onClick={validateSubmit}>
         Submit Review
       </Button>
