@@ -19,7 +19,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 
 
 //Dev mode
-const serverURL = "http://ov-research-4.uwaterloo.ca:3072"; //enable for dev mode
+const serverURL = ""; //enable for dev mode
 
 //Deployment mode instructions
 //const serverURL = "http://ov-research-4.uwaterloo.ca:PORT"; //enable for deployed mode; Change PORT to the port number given to you;
@@ -188,18 +188,19 @@ const MovieSelection = (props) => {
   };
 
   return (
+
     <FormControl style={{minWidth: "200px", width : "auto"}} variant="outlined" className={props.classes.formControl}>
       <InputLabel>Select a Movie</InputLabel>
       <Select
         value={props.selectedMovie}
         onChange={changeMovie}
         label="Select a Movie"
+      
       >
-        <MenuItem value={"Avenger's: Endgame"}>Avenger's: Endgame</MenuItem>
-        <MenuItem value={"Spiderman: No Way Home"}>Spiderman: No Way Home</MenuItem>
-        <MenuItem value={"The Lion King"}>The Lion King</MenuItem>
-        <MenuItem value={"Top Gun Maverick"}>Top Gun Maverick</MenuItem>
-        <MenuItem value={"Harry Potter and the Philosopher's Stone"}>Harry Potter and the Philosopher's Stone</MenuItem>
+        <MenuItem value=""></MenuItem>
+        {props.movies.map((movieValue) => (
+        <MenuItem value = {movieValue.name}>{movieValue.name}</MenuItem>
+        ))}
       </Select>
     </FormControl>
   )
@@ -290,6 +291,37 @@ const Review = (classes) => {
   const [selectedMovie, setSelectedMovie] = React.useState('');
   const [selectedRating, setSelectedRating] = React.useState(0)
 
+  const[movies, setMovies] = React.useState([])
+
+  const getMovies = () => {
+    callApiGetMovies()
+    .then(res => {
+    var parsed = JSON.parse(res.express);
+    console.log(parsed);
+    setMovies(parsed);
+    })
+    }
+
+    const callApiGetMovies = async () => {
+    const url = serverURL + "/api/getMovies";
+    console.log(url);
+    const response = await fetch(url, {
+    method: "POST",
+    headers: {
+    "Content-Type": "application/json",
+    }
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    console.log("User settings: ", body);
+    return body;
+    }
+
+    React.useEffect(() => {
+      getMovies();
+    }, []);
+    
+
 
   const changeReview = (value) => {
     setEnteredReview(value);
@@ -306,6 +338,7 @@ const Review = (classes) => {
   const changeRating = (value) => {
     setSelectedRating(value);
   }
+ 
 
   //Data validation with submit button
   const validateSubmit = () => {
@@ -390,7 +423,7 @@ const homePage = (
     </Grid>
 
     <Grid Item style = {selector}>
-      <MovieSelection selectedMovie={selectedMovie} onChange={changeMovie} classes={classes} />
+      <MovieSelection selectedMovie={selectedMovie} movies={movies} onChange={changeMovie} classes={classes} />
     </Grid>
 
     <Grid Item style = {reviewBox}>

@@ -14,17 +14,13 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(path.join(__dirname, "client/build")));
 
 
-app.post('/api/loadUserSettings', (req, res) => {
-
+app.post('/api/getMovies', (req, res) => {
+	
 	let connection = mysql.createConnection(config);
-	let userID = req.body.userID;
 
-	let sql = `SELECT mode FROM user WHERE userID = ?`;
+	let sql = `SELECT * FROM movies`;
 	console.log(sql);
-	let data = [userID];
-	console.log(data);
-
-	connection.query(sql, data, (error, results, fields) => {
+	connection.query(`SELECT name FROM movies`, (error, results, fields) => {
 		if (error) {
 			return console.error(error.message);
 		}
@@ -35,6 +31,7 @@ app.post('/api/loadUserSettings', (req, res) => {
 	});
 	connection.end();
 });
+
 
 
 
