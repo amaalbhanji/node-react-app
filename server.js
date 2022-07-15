@@ -6,6 +6,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 
 const { response } = require('express');
+const { strictEqual } = require('assert');
 const app = express();
 const port = process.env.PORT || 5000;
 app.use(bodyParser.json({ limit: '50mb' }));
@@ -20,7 +21,7 @@ app.post('/api/getMovies', (req, res) => {
 
 	let sql = `SELECT * FROM movies`;
 	console.log(sql);
-	connection.query(`SELECT name FROM movies`, (error, results, fields) => {
+	connection.query(sql, (error, results, fields) => {
 		if (error) {
 			return console.error(error.message);
 		}
@@ -31,6 +32,24 @@ app.post('/api/getMovies', (req, res) => {
 	});
 	connection.end();
 });
+
+app.post('/api/addReview', (req, res) => {
+	var review = req.body;
+	
+	let connection = mysql.createConnection(config);
+	let sql = 'INSERT INTO Review (movieID, userID, reviewTitle, reviewContent, reviewScore) VALUES ?';
+	var values = [Object.values(review.data)];
+	console.log(values);
+	connection.query(sql,[values],(error, results, fields) => {
+		if (error) {
+			return console.error(error.message);
+		}
+
+		res.send({ express: results });
+	});
+	connection.end();
+});
+
 
 
 

@@ -16,6 +16,13 @@ import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+
+
 
 
 //Dev mode
@@ -190,16 +197,21 @@ const MovieSelection = (props) => {
   return (
 
     <FormControl style={{minWidth: "200px", width : "auto"}} variant="outlined" className={props.classes.formControl}>
-      <InputLabel>Select a Movie</InputLabel>
+      <InputLabel>
+      Select a Movie
+      </InputLabel>
       <Select
         value={props.selectedMovie}
         onChange={changeMovie}
         label="Select a Movie"
       
       >
-        <MenuItem value=""></MenuItem>
+        <MenuItem >
+          </MenuItem>
         {props.movies.map((movieValue) => (
-        <MenuItem value = {movieValue.name}>{movieValue.name}</MenuItem>
+        <MenuItem 
+          value = {movieValue.name}>{movieValue.name}
+        </MenuItem>
         ))}
       </Select>
     </FormControl>
@@ -289,15 +301,21 @@ const Review = (classes) => {
   const [enteredReview, setEnteredReview] = React.useState('');
   const [enteredTitle, setEnteredTitle] = React.useState('');
   const [selectedMovie, setSelectedMovie] = React.useState('');
-  const [selectedRating, setSelectedRating] = React.useState(0)
+  const [selectedMovieId, setSelectedMovieId] = React.useState();
 
-  const[movies, setMovies] = React.useState([])
+  const [selectedRating, setSelectedRating] = React.useState(0)
+  const [movies, setMovies] = React.useState([])
+  const [openDialog, setOpenDialog] = React.useState(false);
+  const [openDialogTitle, setOpenDialogTitle] = React.useState(false);
+  const [openDialogReview, setOpenDialogReview] = React.useState(false);
+  const [openDialogRating, setOpenDialogRating] = React.useState(false);
+  const [openDialogMovie, setOpenDialogMovie] = React.useState(false);
 
   const getMovies = () => {
     callApiGetMovies()
     .then(res => {
     var parsed = JSON.parse(res.express);
-    console.log(parsed);
+    //console.log(parsed);
     setMovies(parsed);
     })
     }
@@ -313,13 +331,38 @@ const Review = (classes) => {
     });
     const body = await response.json();
     if (response.status !== 200) throw Error(body.message);
-    console.log("User settings: ", body);
+    console.log(body);
     return body;
     }
 
     React.useEffect(() => {
       getMovies();
     }, []);
+
+  const addReview = (review) => {
+    callApiAddReview(review)
+      .then(res => {
+      })
+  }
+
+  const callApiAddReview = async (review) => {
+    const url = serverURL + "/api/addReview";
+    console.log(url);
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        //authorization: `Bearer ${this.state.token}`
+      },
+      body: JSON.stringify({
+        data: review
+      })
+    });
+    const body = await response.json();
+    if (response.status !== 200) throw Error(body.message);
+    //console.log("Found recipes: ", body);
+    return body;
+  }
     
 
 
@@ -333,37 +376,72 @@ const Review = (classes) => {
 
   const changeMovie = (value) => {
     setSelectedMovie(value);
+    var id = 0;
+    for(var i=0; i<movies.length;i++){
+      if (movies[i].name === value){
+        id = movies[i].id
+      }
+    }
+    setSelectedMovieId(id)
   };
 
   const changeRating = (value) => {
     setSelectedRating(value);
+  }
+
+  const closeDialog = () => {
+    setOpenDialog(false);
+  }
+
+  const closeDialogTitle = () => {
+    setOpenDialogTitle(false);
+  }
+
+  const closeDialogReview = () => {
+    setOpenDialogReview(false);
+  }
+
+  const closeDialogRating = () => {
+    setOpenDialogRating(false);
+  }
+
+  const closeDialogMovie = () => {
+    setOpenDialogMovie(false);
   }
  
 
   //Data validation with submit button
   const validateSubmit = () => {
     if (enteredTitle.length === 0) {
-      console.log("Please enter your review title");
+      setOpenDialogTitle(true);
     } 
     
     if (enteredReview.length === 0) {
       console.log("Please enter your review");
+      setOpenDialogReview(true);
     } 
     
     if (selectedRating === 0) {
       console.log("Please select the rating");
+      setOpenDialogRating(true);
     } 
     
     if (selectedMovie.length === 0) {
-      console.log("Please select a movie");
+     setOpenDialogMovie(true);
     } 
     
     if (enteredTitle.length > 0 && enteredReview.length > 0 && selectedRating > 0 && selectedMovie.length > 0) {
-      console.log("Your review has been submitted");
-      console.log("Selected Movie: ", selectedMovie);
-      console.log("Review Title: ", enteredTitle);
-      console.log("Review Body: ", enteredReview);
-      console.log("Movie Rating: ", selectedRating);
+
+      var sqlDisplay = {
+        "movieID": selectedMovieId,
+        "userID": 1,
+        "title": enteredTitle,
+        "body": enteredReview,
+        "rating": parseInt(selectedRating)
+      }
+      setOpenDialog(true);
+      addReview(sqlDisplay);
+
     }
   }
 
@@ -405,6 +483,7 @@ const Review = (classes) => {
   }
 
 const homePage = (
+<div>
   <Grid
     container
     spacing={0}
@@ -443,7 +522,93 @@ const homePage = (
         Submit Review
       </Button>
     </Grid>
+ 
   </Grid>
+  <Dialog open={openDialog}>
+        <DialogTitle>
+          {"Sucesssfully Submitted"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Your review has been submitted:
+            <p>Movie: {selectedMovie}</p>
+            <p>Review Title: {enteredTitle}</p>
+            <p>Review: {enteredReview}</p>
+            <p>Rating: {selectedRating}</p>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+        <Button variant="contained" color="secondary" onClick={closeDialog}>
+          OK  
+          </Button>
+        </DialogActions>
+        </Dialog>
+
+        <Dialog open={openDialogTitle}>
+        <DialogTitle>
+          {"Incomplete Submission"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please Enter Your Movie Review Title
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+        <Button variant="contained" color="secondary" onClick={closeDialogTitle}>
+          OK  
+          </Button>
+        </DialogActions>
+        </Dialog>
+
+        <Dialog open={openDialogMovie}>
+        <DialogTitle>
+          {"Incomplete Submission"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please Select A Movie
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+        <Button variant="contained" color="secondary" onClick={closeDialogMovie}>
+          OK  
+          </Button>
+        </DialogActions>
+        </Dialog>
+
+
+        <Dialog open={openDialogReview}>
+        <DialogTitle>
+          {"Incomplete Submission"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please Enter Your Movie Review
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+        <Button variant="contained" color="secondary" onClick={closeDialogReview}>
+          OK  
+          </Button>
+        </DialogActions>
+        </Dialog>
+
+        <Dialog open={openDialogRating}>
+        <DialogTitle>
+          {"Incomplete Submission"}
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Please Enter Your Movie Rating
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+        <Button variant="contained" color="secondary" onClick={closeDialogRating}>
+          OK  
+          </Button>
+        </DialogActions>
+        </Dialog>
+  </div>
 
 )
 
