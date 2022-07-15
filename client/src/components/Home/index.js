@@ -26,7 +26,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 
 
 //Dev mode
-const serverURL = ""; //enable for dev mode
+const serverURL = "ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3072"; //enable for dev mode
 
 //Deployment mode instructions
 //const serverURL = "http://ov-research-4.uwaterloo.ca:PORT"; //enable for deployed mode; Change PORT to the port number given to you;
