@@ -94,108 +94,6 @@ const styles = theme => ({
 });
 
 
-// class Home extends Component {
-//   constructor(props) {
-//     super(props);
-//     this.state = {
-//       userID: 1,
-//       mode: 0
-//     }
-//   };
-
-//   componentDidMount() {
-//     //this.loadUserSettings();
-//   }
-
-
-//   loadUserSettings() {
-//     this.callApiLoadUserSettings()
-//       .then(res => {
-//         //console.log("loadUserSettings returned: ", res)
-//         var parsed = JSON.parse(res.express);
-//         console.log("loadUserSettings parsed: ", parsed[0].mode)
-//         this.setState({ mode: parsed[0].mode });
-//       });
-//   }
-
-//   callApiLoadUserSettings = async () => {
-//     const url = serverURL + "/api/loadUserSettings";
-
-//     const response = await fetch(url, {
-//       method: "POST",
-//       headers: {
-//         "Content-Type": "application/json",
-//         //authorization: `Bearer ${this.state.token}`
-//       },
-//       body: JSON.stringify({
-//         userID: this.state.userID
-//       })
-//     });
-//     const body = await response.json();
-//     if (response.status !== 200) throw Error(body.message);
-//     console.log("User settings: ", body);
-//     return body;
-//   }
-
-//   render() {
-//     const { classes } = this.props;
-
-
-//     const mainMessage = (
-//       <Grid
-//         container
-//         spacing={0}
-//         direction="column"
-//         justify="flex-start"
-//         alignItems="flex-start"
-//         style={{ minHeight: '100vh' }}
-//         className={classes.mainMessageContainer}
-//       >
-//         <Grid item>
-
-//           <Typography
-//             variant={"h3"}
-//             className={classes.mainMessage}
-//             align="flex-start"
-//           >
-//             {this.state.mode === 0 ? (
-//               <React.Fragment>
-//                 Movie Review From!
-//               </React.Fragment>
-//             ) : (
-//               <React.Fragment>
-//                 Welcome back!
-//               </React.Fragment>
-//             )}
-//           </Typography>
-
-//         </Grid>
-//       </Grid>
-//     ) 
-
-
-//     return (
-//       <MuiThemeProvider theme={theme}>
-//         <div className={classes.root}>
-//           <CssBaseline />
-//           <Paper
-//             className={classes.paper}
-//           >
-//             {mainMessage}
-
-//           </Paper>
-
-//         </div>
-//       </MuiThemeProvider>
-//     );
-//   }
-// }
-
-
-// Home.propTypes = {
-//   classes: PropTypes.object.isRequired
-// };
-
 //Creating Movie Selection Component
 const MovieSelection = (props) => {
   const changeMovie = (event) => {
@@ -492,6 +390,7 @@ const Review = (classes) => {
 
 const homePage = (
 <div>
+    
 <Box sx={{ flexGrow: 1 }} >
           <AppBar position="static">
             <Toolbar>
