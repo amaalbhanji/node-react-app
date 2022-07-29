@@ -15,7 +15,7 @@ import Paper from '@mui/material/Paper';
 import { createTheme, ThemeProvider, styled } from '@material-ui/core/styles';
 
 
-const serverURL = ""; //enable for dev mode
+const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3072"; //enable for dev mode
 
 const Search = () => {
     const [searchForMovie, setSearchForMovie] = React.useState('');

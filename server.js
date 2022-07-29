@@ -126,5 +126,18 @@ app.post('/api/addSearchContent', (req, res) => {
 	connection.end();
 });
 
-app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
-//app.listen(port, '129.97.25.211'); //for the deployed version, specify the IP address of the server
+app.post('/api/topMoviesList', (req, res) => {
+	var searchBox = req.body.data;
+	var sql = "SELECT AVG(R.reviewScore) AS avgScore, M.name, M.trailer_link FROM a7bhanji.Review R, a7bhanji.movies M WHERE M.id = R.movieID GROUP BY M.id ORDER BY avgScore desc LIMIT 4"
+	console.log(sql)
+	let connection = mysql.createConnection(config);
+	connection.query(sql, function (err, result, fields) {
+		if (err) throw err;
+		let string = JSON.stringify(result);
+		console.log(string)
+		res.send({ result: string });
+	});
+	connection.end();
+});
+//app.listen(port, () => console.log(`Listening on port ${port}`)); //for the dev version
+app.listen(port, '172.31.31.77'); //for the deployed version, specify the IP address of the server

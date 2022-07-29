@@ -34,7 +34,7 @@ import { SearchOff } from '@mui/icons-material';
 
 
 //Dev mode
-const serverURL = ""; //enable for dev mode
+const serverURL = "http://ec2-18-216-101-119.us-east-2.compute.amazonaws.com:3072"; //enable for dev mode
 
 //Deployment mode instructions
 //const serverURL = "http://ov-research-4.uwaterloo.ca:PORT"; //enable for deployed mode; Change PORT to the port number given to you;
@@ -451,9 +451,9 @@ const homePage = (
     container
     spacing={0}
     direction="column"
-    justify="flex-start"
+    //justify="flex-start"
     alignItems="center"
-    style={{ minHeight: '100vh'}}
+    //style={{ minHeight: '100vh'}}
     //className={classes.mainMessageContainer}
   >
     <Grid Item style={titleStyle}>
@@ -576,14 +576,12 @@ const homePage = (
 )
 
 return (
-  <MuiThemeProvider theme={theme}>
-    <div className={classes.root}>
-      <CssBaseline />
-      <Paper
-        className={classes.paper}
-      >
+  <MuiThemeProvider>
+    <div>
+     
+
         {homePage}
-      </Paper>
+    
     </div>
   </MuiThemeProvider>
 );
